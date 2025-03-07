@@ -4,11 +4,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import swervelib.SwerveDrive;
 import swervelib.SwerveModule;
+import swervelib.encoders.SwerveAbsoluteEncoder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import java.io.File;
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.function.DoubleSupplier;
+
+import com.ctre.phoenix.sensors.CANCoder;
+
 import swervelib.SwerveController;
 
 
@@ -19,7 +25,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public SwerveSubsystem(File directory) {
     try {
-      swerveDrive = new swervelib.parser.SwerveParser(directory).createSwerveDrive(maximumSpeed);
+      swerveDrive = new swervelib.parser.SwerveParser(directory).createSwerveDrive(3);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -62,11 +68,29 @@ public class SwerveSubsystem extends SubsystemBase {
     });
   }
 
+  public void updateSmartDashboard() {
+    int moduleIndex = 0;
+    for (SwerveModule module : swerveDrive.getModules()) {
+        SwerveAbsoluteEncoder canCoder = module.getAbsoluteEncoder();
+        double position = canCoder.getAbsolutePosition();
+        SmartDashboard.putNumber("Module " + moduleIndex + " Encoder Position", position);
+        moduleIndex++;
+    }
+}
+
   @Override
   public void periodic() {
+    int moduleIndex = 0;
+    for (SwerveModule module : swerveDrive.getModules()) {
+        SwerveAbsoluteEncoder canCoder = module.getAbsoluteEncoder();
+        double position = canCoder.getAbsolutePosition();
+        SmartDashboard.putNumber("Module " + moduleIndex + " Encoder Position", position);
+        moduleIndex++;
+    }
   }
-
+    
     public SwerveController getSwerveController() {
-    return swerveDrive.swerveController;
+      
+      return swerveDrive.swerveController;
   }
 }
