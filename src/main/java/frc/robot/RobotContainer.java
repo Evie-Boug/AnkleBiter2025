@@ -36,7 +36,7 @@ public class RobotContainer {
     swerveSubsystem,
     () -> MathUtil.applyDeadband(driverController.getLeftY(), Constants.OperatorConstants.LEFT_Y_DEADBAND),
     () -> MathUtil.applyDeadband(driverController.getLeftX(), Constants.OperatorConstants.LEFT_X_DEADBAND),
-    () -> MathUtil.applyDeadband(-driverController.getRightX(), Constants.OperatorConstants.ROTATION_DEADBAND),
+    () -> MathUtil.applyDeadband(driverController.getRightX(), Constants.OperatorConstants.ROTATION_DEADBAND),
     () -> Constants.DriveConstants.FIELD_RELATIVE_DRIVE_MODE
 );
 
